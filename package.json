@@ -1,0 +1,26 @@
+{
+  "name": "node_backend",
+  "version": "1.0.0",
+  "description": "Cinama Booking Ticket ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericsoft123/cinema.git"
+  },
+  "keywords": [
+    "Cinema",
+    "Booking"
+  ],
+  "author": "Eric Kayiranga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ericsoft123/cinema/issues"
+  },
+  "homepage": "https://github.com/ericsoft123/cinema#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
