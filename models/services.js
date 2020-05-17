@@ -55,14 +55,28 @@ exports.main_method={//this is a best practise to change functions dynamically
     },
     cancel_seat:function(seat_id){//delete from booking then update_seat status(async ways)
         var sql =`delete from booking where seat_id='${seat_id}'`;
-        con.query(sql, function (err, result) {
-          if (err) throw err;
-          return {
-            result_query:result_value,
-            method_name:update_method,
-            status:'available',
-        };
+     
+        return new Promise(function(resolve, reject) {
+            var returnValue = "";
+            con.query(sql, function(error, rows) {
+                if (error) {
+                    returnValue = {
+                        result_query:false,
+                        method_name:update_method,
+                        status:'available',
+                    };
+                } else {
+                    returnValue ={
+                        result_query:result_value,
+                        method_name:update_method,
+                        status:'available',
+                    };
+                 
+                }
+                resolve(returnValue)
+            });
         });
+        
         
     },
     update_seat:function(seat_id,status){//every time we book_seat,we will sent email then update or cancel_seat we must  update seat too
@@ -90,7 +104,7 @@ exports.main_method={//this is a best practise to change functions dynamically
         });
         
     },
-    sent_email:function(name,email,tel,seat_id){
+    sent_email:function(name,email,tel,seat_id,seat_number){
         return new Promise(function(resolve, reject) {
             var returnValue = "";
 
@@ -127,9 +141,13 @@ var transporter = nodemailer.createTransport({
         <td>${tel}</td>
     </tr>
     <tr>
-        <td>Seat No</td>
+        <td>Seat ID</td>
         <td>${seat_id}</td>
     </tr>
+    <tr>
+    <td>Seat Number</td>
+    <td>${seat_number}</td>
+</tr>
     </tbody>
 </table>
     `
