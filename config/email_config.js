@@ -1,6 +1,6 @@
 exports.email_auth=function(){
     return{
-        email:"ericsoft",
+        email:"esoftdev1@gmail.com",
         password:"1234bigi"
     }
 }

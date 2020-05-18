@@ -12,7 +12,38 @@ const result_value=true;//it is true on success only this is to make sure that i
 const update_method='update_seat';
 
 exports.main_method={//this is a best practise to change functions dynamically
-    display_seat:function(callback){
+    check_seat:function(seat_id,email){
+        var sql =`select email,seat_id from booking where seat_id='${seat_id}' and email='${email}'`;
+        return new Promise(function(resolve, reject) {
+         var returnValue = "";
+         con.query(sql, function(error, rows,result) {
+             if (error) {
+                console.log("not found");
+             } else {
+                 if(rows && rows.length ){
+                    returnValue={//return true if found
+                       result_query:result_value,
+                       //message_result:"This Seat is booked choose another one",
+
+
+                   };
+                 }
+                 else{
+                    returnValue ={//return false if not found
+                        result_query:false,
+                        
+                    };
+                    
+                 }
+                
+              
+             }
+             resolve(returnValue)
+         });
+     });
+       
+    },
+    display_seat:function(callback){//displya table seat on grid
         con.query("SELECT * FROM seat", function (err, result, fields) {
             if (err) throw err;
         

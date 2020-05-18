@@ -8,16 +8,30 @@ serverapp.use(express.urlencoded());//you must not forget this
 //const db_connect=require('./config/db_config');
 const email_auth_con=require('./config/email_config');
 const my_models=require('./models/services');
-const port=3000;
+
+
+serverapp.use(express.static(__dirname + '/public'));
+//production
+//const port=3000;
+
+const port=process.env.port||8080;
 //var con=db_connect.database_config;
 serverapp.get('/',(req,res)=>{
 
-
-   
+    res.sendFile(__dirname + '/view/jquery-front/index.html');
  
 
 
 })
+serverapp.get('/vuejs',(req,res)=>{
+
+
+    res.sendFile(__dirname + '/view/vue-front/index.html');
+ 
+
+
+})
+
 serverapp.get('/display_seats',(req,res)=>{
  //
 my_models.main_method["display_seat"](function(result) {//this function display_seat it pass 1 parameters as function to be able to have a call back return values
@@ -25,6 +39,26 @@ my_models.main_method["display_seat"](function(result) {//this function display_
   });
 //
  })
+
+ serverapp.get('/check_seat',(req,res)=>{//to check if seat is available when you click to booked seat
+    var seat_id=req.body.seat_id;
+    var email=req.body.email;
+
+    check_select_seat();
+
+    async function check_select_seat(){
+        var check_seat=await my_models.main_method["check_seat"](seat_id,email);
+        if(check_seat.result_query)
+{
+ //here seat is available then it will return true
+ res.json( check_seat.result_value);
+
+}
+    }
+ 
+
+
+})
 serverapp.post('/book_seat',(req,res)=>{
     var name=req.body.name;
     var email=req.body.email;
@@ -36,11 +70,18 @@ serverapp.post('/book_seat',(req,res)=>{
    async function book_seat(){//this to run deleted to make sure if data has been deleted
      
 //
-var booked=await my_models.main_method["book_seat"](name,email,tel,seat_id);
-     
+var check_seat=await my_models.main_method["check_seat"](seat_id,email);
+ 
+if(check_seat.result_query)
+{
+ //here seat is available then it will return true
+ res.json( check_seat.result_value);
 
-//res.json(booked.method_name);
-if(booked.result_query)
+}
+else{//if seat is not available then booked seat
+   //
+      var booked=await my_models.main_method["book_seat"](name,email,tel,seat_id);
+    if(booked.result_query)
 {
 var update_seat=await my_models.main_method[booked.method_name](seat_id,booked.status);//note this is update method
 if(update_seat.result_query){
@@ -53,14 +94,19 @@ if(update_seat.result_query){
 }
 }
            
-//
+
+
+
+   //
+}
+
 }
               
     //
  })
-serverapp.get('/cancel_seat',(req,res)=>{
-    var reslt=email_auth_con.email_auth();
- 
+serverapp.post('/cancel_seat',(req,res)=>{
+   // var reslt=email_auth_con.email_auth();
+    var seat_id=req.body.seat_id;
     //
     cancel_seat();
     async function cancel_seat(){
