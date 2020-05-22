@@ -1,6 +1,8 @@
 exports.email_auth=function(){
     return{
-        email:"esoftdev1@gmail.com",
-        password:"1234bigi"
+        host: "appdev.live",
+        port: 465,
+        email:"appinfo@appdev.live",
+        password:"!1234Bigi"
     }
 }

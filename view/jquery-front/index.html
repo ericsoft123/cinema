@@ -9,21 +9,120 @@
         <title>Cinema Booking System</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        
+        <style>
+        span.red {
+  background: red;
+   border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+}
+
+span.grey {
+  background: #cccccc;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #fff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+}
+.m-between{
+  margin-bottom: 10px;
+}
+
+span.green {
+  background: #5EA226;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+}
+
+span.blue {
+  background: #5178D0;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+}
+
+span.pink {
+  background: #EF0BD8;
+  border-radius: 0.8em;
+  -moz-border-radius: 0.8em;
+  -webkit-border-radius: 0.8em;
+  color: #ffffff;
+  display: inline-block;
+  font-weight: bold;
+  line-height: 1.6em;
+  margin-right: 15px;
+  text-align: center;
+  width: 1.6em; 
+}
+.delbtn{
+  font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    /* padding-top: 0px !important; */
+    margin-top: -25px !important;
+    right: 10px;
+    color: #e8e0e2;
+    cursor: pointer;
+    
+}
+span{
+  position: relative;
+}
+.seat-modal-disp
+{
+  margin-right: -10px !important;
+}
+.seat-big{
+  line-height: 4em !important;
+  width: 4em !important;
+}
+        </style>
     </head>
     <body>
+        <div id="cover-spin"></div>
+       
+        
 <!-- Button trigger modal -->
 <div class="container-fluid">
             
         <div class="row bg-dark">
                <div class="col-lg-12">
-                       <p class="text-center text-light display-4 pt-2" style="font-size:25px">BOOKING CINEMA SEAT APP USING NODEJS AND JQUERY</p>
+                       <p class="text-center text-light display-4 pt-2" style="font-size:25px">BOOKING CINEMA SEAT APP</p>
                </div>
         </div>
       </div>
-<div class="text-center">
+<div class="text-center d-none">
  <a href="/"><p>Run Vue App</p></a>
  <a href="/jquery"><p>Run Jquery</p></a>
 </div>
@@ -32,15 +131,24 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Book Your Seat</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
+               
              <form id="formdata">
-                 <input type="hidden" id="seat_id" name="seat_id">
-                 <input type="hidden" id="seat_number" name="seat_number">
+               <div class="form-group">
+                  <h4 class="text-center">Seat Number</h4>
+                  <input type="hidden" id="seat_id" name="seat_id" >
+                  <input type="hidden" id="seat_number" name="seat_number" class="form-control">
+               </div>
+               <div class="justify-content seat-modal-disp">
+                  <h1 class="seat_disp_array"></h1>
+              </div>
+             
+            
                  <div class="form-group">
                      <label for="">Enter Full Name</label>
                         <input type="text"  name="name" class="form-control" required>
@@ -55,6 +163,8 @@
                         <label for="">Enter Tel Number</label>
                         <input type="tel"  name="tel" class="form-control" required>
                     </div>
+
+                  
                 
              </form>
             </div>
@@ -65,7 +175,7 @@
           </div>
         </div>
       </div>
-   <div class="container">
+   <div class="container wrapper">
         <div class="grid-container data_disp">
             
 
@@ -79,6 +189,7 @@
         
           <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
           <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+          <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
        
     <script src="js/main-jquery.js"></script>
     </body>

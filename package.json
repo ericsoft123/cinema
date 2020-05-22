@@ -4,7 +4,9 @@
   "description": "Cinama Booking Ticket ",
   "main": "app.js",
   "scripts": {
-    "test": "mocha||true"
+    "test": "mocha||true",
+    "client": "cd client && npm start",
+    "start": "concurrently -n 'Server,Client' \"nodemon app.js\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -23,6 +25,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
+    "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mocha": "^7.1.2",
